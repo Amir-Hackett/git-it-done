@@ -1,13 +1,19 @@
 var issueContainerEl = document.querySelector("#issues-container")
+var limitWarningEl = document.querySelector("#limit-warning")
 
 var getRepoIssues = function(repo) {
-    var apiURL = "https://api.github.com/repos/" + repo + "/issues?directions=asc"
+    var apiURL = "https://api.github.com/repos/" + repo + "/issues?direction=asc"
     fetch(apiURL).then(function(response){
         // request was successful
         if(response.ok){
             response.json().then(function(data){
                 // passes response data to dom function
                 displayIssues(data)
+
+                if(response.headers.get("Link")) {
+                    console.log("repo has more than 30 issues")
+                }
+                displayWarning(repo)
             })
         }else {
             alert("There was a problem with your request!")
@@ -53,4 +59,16 @@ for(var i = 0; i < issues.length; i++){
 }
 }
 
-getRepoIssues("react")
+var displayWarning = function(repo){
+    // add text warning container
+    limitWarningEl.textContent = "To see more than 30 issues, visit "
+    var linkEl = document.createElement("a");
+    linkEl.textContent = "See More Issues on GitHub.com";
+    linkEl.setAttribute("href", "https://github.com/" + repo + "/issues");
+    linkEl.setAttribute("target", "_blank");
+  
+    // append to warning container
+    limitWarningEl.appendChild(linkEl);
+}
+
+getRepoIssues("expressjs/express")
