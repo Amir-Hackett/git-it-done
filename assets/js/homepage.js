@@ -26,18 +26,23 @@ var getUserRepos = function(user){
 }
 
 var formSubmitHandler = function(event) {
-    event.preventDefault()
-    
-    // gets the value from input element
-    var username = nameInputEl.value.trim()
-    if (username){
-        getUserRepos(username)
-        nameInputEl.value = ""
+    // prevent page from refreshing
+    event.preventDefault();
+  
+    // get value from input element
+    var username = nameInputEl.value.trim();
+  
+    if (username) {
+      getUserRepos(username);
+  
+      // clear old content
+      repoContainerEl.textContent = '';
+      nameInputEl.value = '';
     } else {
-        alert("Please enter a GitHub username")
+      alert('Please enter a GitHub username');
     }
-}
-
+  };
+  
 var displayRepos = function(repos, searchTerm){
     // check if api returned any repos
     if(repos.length === 0){
