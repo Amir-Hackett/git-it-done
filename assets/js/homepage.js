@@ -2,6 +2,7 @@ var userFormEl = document.querySelector("#user-form")
 var nameInputEl = document.querySelector("#username")
 var repoContainerEl = document.querySelector("#repos-container")
 var repoSearchTerm = document.querySelector("#repo-search-term")
+var languageButtonsEl = document.querySelector("#language-buttons")
 
 var getUserRepos = function(user){
     // format the github api url
@@ -63,6 +64,9 @@ var displayRepos = function(repos, searchTerm){
         repoContainerEl.textContent = "No repositories found"
         return
     }
+
+    repoSearchTerm.textContent = searchTerm;
+    
     // loop over repos
     for (var i = 0; i < repos.length; i++){
         // formats repo name
@@ -103,4 +107,16 @@ var displayRepos = function(repos, searchTerm){
     }
 }
 
+var buttonClickHandler = function(event){
+    // get the language attribute from the clicked element
+   var language = event.target.getAttribute("data-language")
+   if(language) {
+       getFeaturedRepos(language)
+
+       // clears old content
+       repoContainerEl.textContent= ""
+   }
+}
+
+languageButtonsEl.addEventListener("click", buttonClickHandler)
 userFormEl.addEventListener("submit", formSubmitHandler)
