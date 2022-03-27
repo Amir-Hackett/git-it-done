@@ -11,7 +11,6 @@ var getRepoIssues = function(repo) {
                 displayIssues(data)
 
                 if(response.headers.get("Link")) {
-                    console.log("repo has more than 30 issues")
                 }
                 displayWarning(repo)
             })
